@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:XF_CompiledBindings_Picker" x:Class="XF_CompiledBindings_Picker.MainPage" x:DataType="local:MainPageViewModel">
+    <ContentPage.BindingContext>
+        <local:MainPageViewModel />
+    </ContentPage.BindingContext>
+    <StackLayout Padding="15, 80">
+        <!-- Place new controls here -->
+        <Label Text="Welcome to Xamarin.Forms!" HorizontalOptions="Center" VerticalOptions="Start" />
+        
+        <!-- this Picker compiles fine -->
+        <Picker ItemsSource="{Binding Options}" />
+        
+        <!-- adding a binding to Picker.ItemDisplayBindging causes a compilation error: -->
+        <!-- Binding: Property 'Name' not found on 'XF_CompiledBindings_Picker.MainPageViewModel' -->
+        <Picker ItemsSource="{Binding Options}" ItemDisplayBinding="{Binding Name}" />
+        
+        <!-- setting x:DataType to local:PickerOption causes a compilation error: -->
+        <!-- Binding: Property 'Options' not found on 'XF_CompiledBindings_Picker.PickerOption' -->
+        <Picker ItemsSource="{Binding Options}" ItemDisplayBinding="{Binding Name}" x:DataType="local:PickerOption" />
+        
+        <!-- setting x:DataType to local:PickerOption causes a compilation error: -->
+        <!-- Binding: Property 'Options' not found on 'System.String' -->
+        <Picker ItemsSource="{Binding Options}" ItemDisplayBinding="{Binding Name}" x:DataType="x:String" />
+        
+        <!-- setting x:DataType to {Null} fixes the compilation error, but then we can't take advantage of the compiled binding performance enhancements -->
+        <Picker ItemsSource="{Binding Options}" ItemDisplayBinding="{Binding Name}" x:DataType="{Null}" />
+    </StackLayout>
+</ContentPage>
